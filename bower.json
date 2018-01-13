@@ -1,0 +1,17 @@
+{
+  "name": "document",
+  "homepage": "https://github.com/newmann/group",
+  "authors": [
+    "newmann <newmannhu@qq.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

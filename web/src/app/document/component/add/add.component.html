@@ -1,0 +1,72 @@
+<mat-card>
+  <mat-card-header>上传文件</mat-card-header>
+  <mat-card-content>
+    <input type="file" #fileUpload hidden=true ng2FileSelect [uploader]="uploader" (onFileSelected)="selectedFileOnChanged($event)"  multiple />
+    <button mat-raised-button (click)="fileSelect()">选择文件</button>
+    <button mat-raised-button (click)="fileAllUp()" >全部上传</button>
+    <button mat-raised-button (click)="fileAllCancel()" >全部取消</button>
+    <button mat-button (click)="fileAllDelete()" >清除列表</button>
+  </mat-card-content>
+</mat-card>
+<mat-card>
+  <mat-card-header>
+    上传文件列表
+  </mat-card-header>
+  <mat-card-content>
+    <p>已选文件数量: {{ uploader?.queue?.length }}</p>
+    <div class="mat-elevation-z8">
+      <mat-table #table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef> 文件名 </mat-header-cell>
+          <mat-cell *matCellDef="let element"> <strong>{{element.file.name}}</strong> </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="size">
+          <mat-header-cell *matHeaderCellDef> 文件大小 </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <span>{{ element.file.size/1024/1024 | number:'.2' }} MB</span>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="progress">
+          <mat-header-cell *matHeaderCellDef> 进度 </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.progress}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <mat-header-cell *matHeaderCellDef> 状态 </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <span *ngIf="element.isSuccess">上传成功</span>
+            <span *ngIf="element.isCancel">取消</span>
+            <span *ngIf="element.isError">上传错误</span>
+
+            <!--{{element.status}}-->
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <mat-header-cell *matHeaderCellDef> 操作 </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <button (click)="element.upload()" [disabled]="element.isReady || element.isUploading || element.isSuccess">
+              上传
+            </button>
+            <button (click)="element.cancel()" [disabled]="!element.isUploading">
+              取消
+            </button>
+            <!--<button (click)="element.remove()">-->
+            <button (click)="removeFile(element)">
+              清除
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </div>
+  </mat-card-content>
+</mat-card>
+

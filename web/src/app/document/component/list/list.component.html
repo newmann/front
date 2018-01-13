@@ -1,0 +1,23 @@
+<div class="container"
+     fxLayout="row wrap"
+     fxLayout.xs="column"
+     fxLayoutAlign="center stretch"
+     fxLayoutGap="10px"
+     fxLayoutGap.xs="0">
+  <div class="item item-1" fxFlex="30">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>目录</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <tree [tree]="treeData"></tree>
+      </mat-card-content>
+
+    </mat-card>
+  </div>
+  <div class="item item-2" fxFlex="60">
+    <mat-card>detail view</mat-card>
+  </div>
+
+</div>
+
