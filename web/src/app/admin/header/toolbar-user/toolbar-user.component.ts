@@ -1,6 +1,8 @@
 import { Component, OnInit, ElementRef, HostListener } from '@angular/core';
 import { AuthService } from '../../../core/auth.service';
 import { Router } from '@angular/router';
+import {WebsocketService} from "../../../core/websocket.service";
+import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: 'byl-toolbar-user',
@@ -11,6 +13,7 @@ export class ToolbarUserComponent implements OnInit {
 
   isOpen: boolean = false;
   currentUser = null;
+
 
   @HostListener('document:click', ['$event', '$event.target'])
   onClick(event: MouseEvent, targetElement: HTMLElement) {
@@ -26,8 +29,10 @@ export class ToolbarUserComponent implements OnInit {
 
   constructor(private _elementRef: ElementRef,
               private router: Router,
-              private auth: AuthService) {
+              private auth: AuthService,
+              private websocketService: WebsocketService) {
     this.currentUser = this.auth;
+
   }
 
   ngOnInit() {

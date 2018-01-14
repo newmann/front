@@ -19,6 +19,10 @@
           <span class="title">设置</span>
         </div>
         <div class="item" fxLayout="row" fxLayoutAlign="start center" mat-ripple>
+          <mat-icon class="icon">settings</mat-icon>
+          <span class="title">连接状态：{{websocketService.websocketState|async}} </span>
+        </div>
+        <div class="item" fxLayout="row" fxLayoutAlign="start center" mat-ripple>
           <mat-icon class="icon">help</mat-icon>
           <span class="title">帮助</span>
         </div>

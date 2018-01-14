@@ -4,7 +4,7 @@ const proxyConfig = [
   {
     context: '/api',
     pathRewrite: { '^/api': '' },
-    target: 'http://localhost:8030',
+    target: 'http://localhost:8090',
     changeOrigin: true,
     secure: false,
     logLevel: "debug"
