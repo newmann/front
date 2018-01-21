@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import {HttpClient} from "@angular/common/http";
 // import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
 // import { AngularFireAuth } from 'angularfire2/auth';
 // import * as firebase from 'firebase/app';
@@ -43,11 +44,9 @@ export class AuthService {
     return this.authenticated ? this.authState.anonymous : false;
   }
 
-  // constructor(private afAuth: AngularFireAuth, private db: AngularFireDatabase) {
-  //   this.afAuth.authState.subscribe((auth) => {
-  //     this.authState = auth;
-  //   });
-  // }
+  constructor(private http: HttpClient) {
+
+  }
 
   githubLogin() {
     // const provide = new firebase.auth.GithubAuthProvider();
