@@ -21,8 +21,9 @@ import {environment} from "../environments/environment";
 import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {reducers,metaReducers} from "./reducer/index";
 import {CustomRouterStateSerializer} from "./shared/routerstate.utils";
-import {HttpClientModule} from "@angular/common/http";
+import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
 import {StompRService} from "@stomp/ng2-stompjs";
+import {CustomeHttpInterceptor} from "./core/custome-http.interceptor";
 
 // import { FireBaseComponentsModule } from './shared/firebase.module';
 
@@ -82,6 +83,10 @@ import {StompRService} from "@stomp/ng2-stompjs";
     EffectsModule.forRoot([]),
   ],
   providers: [
+    /**拦截器
+     *
+     */
+    { provide: HTTP_INTERCEPTORS, useClass: CustomeHttpInterceptor, multi: true},
     /**
      * The `RouterStateSnapshot` provided by the `Router` is a large complex structure.
      * A custom RouterStateSerializer is used to parse the `RouterStateSnapshot` provided

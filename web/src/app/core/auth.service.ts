@@ -1,57 +1,57 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 // import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
 // import { AngularFireAuth } from 'angularfire2/auth';
 // import * as firebase from 'firebase/app';
+import {Account} from "./account.model";
 
 @Injectable()
 export class AuthService {
 
-  authState: any = null; // 用户信息
-// userRef: AngularFireObject<any>;
-  userRef: any = null;
+  currentAccount: Account = null; // 当前登录的用户
+  currentAccountSubject: BehaviorSubject<Account> = new BehaviorSubject<Account>(null);
 
   get authenticated() {
-    return this.authState !== null;
+    return this.currentAccount !== null;
   }
 
   // 当前用户
-  get currentUser() {
-    return this.authenticated ? this.authState : null;
-  }
+  // get currentAccount() {
+  //   return this.authenticated ? this.currentAccount : null;
+  // }
 
   get currentUserObservable() {
-    return null;
-    // return this.afAuth.authState;
+    return this.currentAccountSubject.asObservable;
+    // return this.afAuth.currentAccount;
   }
 
   // 当前登录用户id
   get currentUserId(): string {
-    return this.authenticated ? this.authState.uid : '';
+    return this.authenticated ? this.currentAccount.id : '';
   }
 
   // 用户账号
-  get currentUserName(): string {
-    if (!this.authState) {
-      return 'Stbui';
+  get currentAccountDisplayName(): string {
+    if (!this.currentAccount) {
+      return '未知账户';
     } else {
-      return this.authState['displayName'] || '佚名';
+      return this.currentAccount.fullname +'[' + this.currentAccount.username + ']';
     }
   }
 
-  // 匿名用户
-  get currentUserAnonymous(): boolean {
-    return this.authenticated ? this.authState.anonymous : false;
-  }
 
   constructor(private http: HttpClient) {
 
   }
 
+  login(username:string,password:string): boolean{
+    return false;
+  }
   githubLogin() {
     // const provide = new firebase.auth.GithubAuthProvider();
     // return this.afAuth.auth.signInWithPopup(provide).then((credential) => {
-    //   this.authState = credential.user;
+    //   this.currentAccount = credential.user;
     //   this.updateUserData();
     // }).catch(error => console.log(error));
   }
@@ -59,7 +59,7 @@ export class AuthService {
   googleLogin() {
     // const provider = new firebase.auth.GoogleAuthProvider();
     // return this.afAuth.auth.signInWithPopup(provider).then((credential) => {
-    //   this.authState = credential.user;
+    //   this.currentAccount = credential.user;
     //   this.updateUserData();
     // }).catch(error => console.log(error));
   }
@@ -67,21 +67,21 @@ export class AuthService {
   twitterLogin() {
     // const provider = new firebase.auth.TwitterAuthProvider();
     // return this.afAuth.auth.signInWithPopup(provider).then((credential) => {
-    //   this.authState = credential.user;
+    //   this.currentAccount = credential.user;
     //   this.updateUserData();
     // }).catch(error => console.log(error));
   }
 
   anonymousLogin() {
     // return this.afAuth.auth.signInAnonymously().then((user) => {
-    //   this.authState = user;
+    //   this.currentAccount = user;
     //   this.updateUserData();
     // }).catch(error => console.log(error));
   }
 
   emailLogin(email: string, password: string) {
     // return this.afAuth.auth.signInWithEmailAndPassword(email, password).then((user) => {
-    //   this.authState = user;
+    //   this.currentAccount = user;
     //   this.updateUserData();
     // });
   }
@@ -91,7 +91,7 @@ export class AuthService {
    * */
   emailSignUp(email: string, password: string) {
     // return this.afAuth.auth.createUserWithEmailAndPassword(email, password).then((user) => {
-    //   this.authState = user;
+    //   this.currentAccount = user;
     //   this.updateUserData();
     // }).catch(error => console.log(error));
   }
@@ -108,7 +108,7 @@ export class AuthService {
    * */
   signOut() {
     // return this.afAuth.auth.signOut().then(() => {
-    //   this.authState = null;
+    //   this.currentAccount = null;
     // }).catch(error => console.log(error));
   }
 
@@ -116,8 +116,8 @@ export class AuthService {
     // const path = `users/${this.currentUserId}`;
     // this.userRef = this.db.object(path);
     // const data = {
-    //   email: this.authState.email,
-    //   name: this.authState.displayName
+    //   email: this.currentAccount.email,
+    //   name: this.currentAccount.displayName
     // };
     //
     // this.userRef.update(data).catch(error => console.log('更新用户数据：', error));
