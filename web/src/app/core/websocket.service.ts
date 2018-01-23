@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {StompConfig, StompRService, StompState} from "@stomp/ng2-stompjs";
 import {Observable} from "rxjs/Observable";
+import "rxjs/add/operator/map";
 import {Message} from '@stomp/stompjs';
 
 @Injectable()
@@ -25,7 +26,7 @@ export class WebsocketService {
 
     this.config = {
       // Which server?
-      url: 'ws://localhost:8090/msg-portal',
+      url: 'ws://localhost:8090/beiyelin',
 
       // Headers
       // Typical keys: login, passcode, host
@@ -47,6 +48,10 @@ export class WebsocketService {
 
     this._stompService.config = this.config;
     this._stompService.initAndConnect();
+    this.websocketState = this._stompService.state
+       .map((state: number) => StompState[state]);
+    this.generalMessage = this._stompService.subscribe('/topic');
+
   }
 
 }

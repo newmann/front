@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {ResultBody} from "../../core/result-body.model";
+import { WebsocketService } from '../../core/websocket.service';
 
 @Component({
   selector: 'byl-signin',
@@ -31,7 +32,8 @@ export class SigninComponent implements OnInit {
 
   constructor(private router: Router,
               private fb: FormBuilder,
-              private auth: AuthService) {
+              private auth: AuthService,
+              private websocketService: WebsocketService) {
     this.loginError = null;
   }
 
@@ -99,6 +101,7 @@ export class SigninComponent implements OnInit {
             this.auth.changeAccount(data.data.account);
             this.auth.token = data.data.token;
             this.router.navigate(['/']);
+            this.websocketService.initStomp(); //重新初始化websocket
           } else{
             this.loginError = data.msg;
           }

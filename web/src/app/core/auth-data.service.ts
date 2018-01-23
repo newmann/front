@@ -9,7 +9,7 @@ import {Account} from "./account.model";
 
 @Injectable()
 export class AuthDataService {
-  public token: string; //当前账户的token
+  public token: string = ''; //当前账户的token,初始值为空字符串
   public currentAccount: Account = null; // 当前登录的用户
   public currentAccountSubject: BehaviorSubject<Account> = new BehaviorSubject<Account>(null);
   constructor(){   }
