@@ -10,16 +10,23 @@ import {
 } from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs/Observable";
+import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
+import {AuthDataService} from "./auth-data.service";
 
 @Injectable()
 export class CustomeHttpInterceptor implements HttpInterceptor {
 
-  constructor() {}
+  constructor(private authData: AuthDataService) {
+
+  }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpSentEvent | HttpHeaderResponse | HttpProgressEvent | HttpResponse<any> | HttpUserEvent<any>> {
     console.log('--------------注册http拦截器----------')
     const jwtReq = req.clone({
-      headers: req.headers.set('token', 'asdf')
+      headers: req.headers.set('token', this.authData.token)
+        .set('Content-type','application/json; charset=utf-8')
     });
     return next
       .handle(jwtReq)

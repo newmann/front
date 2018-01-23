@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
-import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 
 import { HeaderComponent } from './header.component';
@@ -13,6 +12,7 @@ import { LoadingModule } from '../../component/loading';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import {HttpClientModule} from "@angular/common/http";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -22,7 +22,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 @NgModule({
   imports: [
     SharedModule,
-    HttpModule,
+    HttpClientModule,
     RouterModule,
     PerfectScrollbarModule,
     LoadingModule

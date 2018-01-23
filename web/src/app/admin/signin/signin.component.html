@@ -20,6 +20,9 @@
           </div>
           <button mat-raised-button color="primary" type="submit" [disabled]="!userForm.valid">登录</button>
         </form>
+        <div *ngIf="loginError" class="help is-danger">
+          {{ loginError }}
+        </div>
 
         <div class="sign-third">
           <button mat-raised-button (click)="signInWithGithub()">Github 账号登录</button>

@@ -10,13 +10,13 @@ export class WebsocketService {
   generalMessage: Observable<Message>;
 
   constructor(private _stompService: StompRService) {
-    console.log('Stomp init');
-    this.initStomp();
-    console.log('Status init');
-    this.websocketState = this._stompService.state
-      .map((state: number) => StompState[state]);
-    console.log('subscribe general channel');
-    this.generalMessage = this._stompService.subscribe('/general');
+    // console.log('Stomp init');
+    // this.initStomp();
+    // console.log('Status init');
+    // this.websocketState = this._stompService.state
+    //   .map((state: number) => StompState[state]);
+    // console.log('subscribe general channel');
+    // this.generalMessage = this._stompService.subscribe('/general');
 
   }
 

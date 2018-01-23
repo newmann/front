@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+
 
 import { ToolbarNotificationModel } from './toolbar-notification.model';
+import {HttpClient} from "@angular/common/http";
 
 @Injectable()
 export class ToolbarNotificationService {
 
   notifications: ToolbarNotificationModel[];
 
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
     this.notifications = [
       {
         id: 'id',

@@ -12,7 +12,7 @@ import {Observable} from "rxjs/Observable";
 export class ToolbarUserComponent implements OnInit {
 
   isOpen: boolean = false;
-  currentUser = null;
+  currentAuth = null;
 
 
   @HostListener('document:click', ['$event', '$event.target'])
@@ -31,7 +31,7 @@ export class ToolbarUserComponent implements OnInit {
               private router: Router,
               private auth: AuthService,
               private websocketService: WebsocketService) {
-    this.currentUser = this.auth;
+    this.currentAuth = this.auth;
 
   }
 

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {ResultBody} from "../../core/result-body.model";
 
 @Component({
   selector: 'byl-signin',
@@ -9,7 +10,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./signin.component.scss']
 })
 export class SigninComponent implements OnInit {
-
+  loginError: string;
   userForm: FormGroup;
   formErrors = {
     'email': '',
@@ -31,6 +32,7 @@ export class SigninComponent implements OnInit {
   constructor(private router: Router,
               private fb: FormBuilder,
               private auth: AuthService) {
+    this.loginError = null;
   }
 
   ngOnInit() {
@@ -40,12 +42,12 @@ export class SigninComponent implements OnInit {
   buildForm() {
     this.userForm = this.fb.group({
       'email': ['', [
-        Validators.required,
-        Validators.email
+        Validators.required
+        // ,Validators.email  //todo 方便测试，暂时放开
       ]
       ],
       'password': ['', [
-        Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'),
+        // Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'), //todo 方便测试，暂时放开
         Validators.minLength(6),
         Validators.maxLength(25)
       ]
@@ -90,12 +92,32 @@ export class SigninComponent implements OnInit {
     //     .catch(error => console.log('邮箱登录出错：', error));
   }
 
+  signInWithUsername() {
+    this.auth.login(this.userForm.value['email'], this.userForm.value['password']).subscribe(
+        data=>{
+          if (data.code == ResultBody.RESULT_CODE_SUCCESS){
+            this.auth.changeAccount(data.data.account);
+            this.auth.token = data.data.token;
+            this.router.navigate(['/']);
+          } else{
+            this.loginError = data.msg;
+          }
+        },
+        err => {
+          console.log(err);
+          this.loginError = err.toString();
+        }
+
+    );
+
+  }
+
   signInAnonymously() {
     // this.auth.anonymousLogin().then(() => this.afterSignIn());
   }
 
   login() {
-    this.signInWithEmail();
+    this.signInWithUsername();
   }
 
   private afterSignIn() {

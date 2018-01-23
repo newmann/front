@@ -3,14 +3,15 @@
  * @Author: newmann
  * @Date: Created in 21:05 2018-01-22
  */
-import {IBaseModel} from "./base.model";
+import {IBaseModel} from "./i-base.model";
+import {Permission} from "./permission.model";
 
 export class Account extends IBaseModel{
   username:string;
-  fullname:string;
+  fullName:string;
   email:string;
   phone:string;
   nickname:string;
   passwordResetDuration:number;
-
+  permissions: Set<Permission>;
 }

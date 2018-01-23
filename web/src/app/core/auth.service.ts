@@ -1,52 +1,84 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
-// import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
-// import { AngularFireAuth } from 'angularfire2/auth';
-// import * as firebase from 'firebase/app';
 import {Account} from "./account.model";
+import {AuthAccountBO} from "./auth-account-bo.model";
+import {AuthBO} from "./auth-bo.model";
+import {ResultBody} from "./result-body.model";
+import {Observable} from "rxjs/Observable";
+import {AuthDataService} from "./auth-data.service";
 
 @Injectable()
 export class AuthService {
+  public static LOGIN_OK : string= 'ok';
+  public static URL_AUTH_LOGIN: string = "/api/auth/login";
+  // public token: string; //当前账户的token
+  // public currentAccount: Account = null; // 当前登录的用户
+  // public currentAccountSubject: BehaviorSubject<Account> = new BehaviorSubject<Account>(null);
 
-  currentAccount: Account = null; // 当前登录的用户
-  currentAccountSubject: BehaviorSubject<Account> = new BehaviorSubject<Account>(null);
+  get token() {
+    return this.authData.token;
+  }
+
+  set token(token: string){
+    this.authData.token = token;
+  }
 
   get authenticated() {
-    return this.currentAccount !== null;
+    return this.authData.authenticated;
   }
 
   // 当前用户
-  // get currentAccount() {
-  //   return this.authenticated ? this.currentAccount : null;
-  // }
+  get currentAccount() {
+    return this.authData.currentAccount;
+  }
+  public changeAccount(newAccount: Account){
+    this.authData.currentAccount = newAccount;
+    this.authData.currentAccountSubject.next(newAccount);
+}
 
   get currentUserObservable() {
-    return this.currentAccountSubject.asObservable;
+    return this.authData.currentUserObservable;
     // return this.afAuth.currentAccount;
   }
 
   // 当前登录用户id
   get currentUserId(): string {
-    return this.authenticated ? this.currentAccount.id : '';
+    return this.authData.currentUserId;
   }
 
   // 用户账号
   get currentAccountDisplayName(): string {
-    if (!this.currentAccount) {
-      return '未知账户';
-    } else {
-      return this.currentAccount.fullname +'[' + this.currentAccount.username + ']';
-    }
+    return this.authData.currentAccountDisplayName
   }
 
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,private authData: AuthDataService) {
 
   }
 
-  login(username:string,password:string): boolean{
-    return false;
+  login(username:string,password:string): Observable<ResultBody<AuthBO>> {
+    let loginAccount = new AuthAccountBO();
+    loginAccount.username = username;
+    loginAccount.password = password;
+    return this.http.post<ResultBody<AuthBO>>(AuthService.URL_AUTH_LOGIN,loginAccount);
+    //   .subscribe(
+    //   data=>{
+    //     if(data.code == ResultBody.RESULT_CODE_SUCCESS){
+    //       this.changeAccount(data.data.account);
+    //       this.token = data.data.token;
+    //       return   AuthService.URL_AUTH_LOGIN;
+    //     } else{
+    //       return data.msg;
+    //     }
+    //   },
+    //   err => {
+    //     console.log(err);
+    //     return err.toString;
+    //   }
+    // );
+
+
   }
   githubLogin() {
     // const provide = new firebase.auth.GithubAuthProvider();
