@@ -33,10 +33,11 @@
     "@ngrx/router-store": "^4.1.1",
     "@ngrx/store": "^4.1.1",
     "@ngrx/store-devtools": "^4.1.1",
-    "@stomp/ng2-stompjs": "^0.6.2",
+    "@stomp/stompjs": "^4.0.0",
     "@swimlane/ngx-charts": "^6.1.0",
     "@swimlane/ngx-datatable": "^11.0.4",
     "@swimlane/ngx-dnd": "^3.1.0",
+    "@types/sockjs-client": "^1.1.0",
     "angular-calendar": "^0.21.3",
     "core-js": "^2.4.1",
     "d3": "^4.11.0",
@@ -52,6 +53,7 @@
     "normalize.css": "^7.0.0",
     "rxjs": "^5.5.2",
     "screenfull": "^3.3.2",
+    "sockjs-client": "^1.1.4",
     "zone.js": "^0.8.14"
   },
   "devDependencies": {

@@ -22,7 +22,6 @@ import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {reducers,metaReducers} from "./reducer/index";
 import {CustomRouterStateSerializer} from "./shared/routerstate.utils";
 import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
-import {StompRService} from "@stomp/ng2-stompjs";
 import {CustomeHttpInterceptor} from "./core/custome-http.interceptor";
 
 // import { FireBaseComponentsModule } from './shared/firebase.module';
@@ -93,12 +92,7 @@ import {CustomeHttpInterceptor} from "./core/custome-http.interceptor";
      * by `@ngrx/router-store` to include only the desired pieces of the snapshot.
      */
     { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
-    /**
-     * The initialization process can be manually controlled with the additional class
-     * StompRService which is injected instead of StompService. This has a few additional
-     * ethods to assign a configuration and manually initiate the connection to the STOMP Broker.
-     */
-    StompRService
+
   ],
   bootstrap: [AppComponent]
 })
