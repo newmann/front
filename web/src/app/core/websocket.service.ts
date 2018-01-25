@@ -32,7 +32,7 @@ export class WebsocketService {
     this.socketjs = new SockJS("http://localhost:8090/beiyelin");
   }
   this.stompClient = Stomp.over(this.socketjs);
-  this.stompClient.connect({},
+  this.stompClient.connect({'Authorization': this.authData.token},
     frame =>{console.log('Connected: ' + frame);},
     err=>{console.log('err',err);},
   );
