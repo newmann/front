@@ -1,0 +1,34 @@
+<mat-card>
+  <mat-card-header>
+      <mat-card-title>websocket测试</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="container" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="10px">
+      <div class="item" >
+        <mat-form-field >
+          <input  matInput placeholder="sockjs链接地址" [(value)]="websocketUri">
+        </mat-form-field>
+
+      </div>
+      <div class="item">
+        <p>sockjs链接状态：{{sockjsStatus}}</p>
+      </div>
+      <div class="item">
+        <button mat-raised-button color="primary" (click)="sockjsConnect()">socketjs连接</button>
+        <button mat-raised-button color="warn"(click)="sockjsDisconnect()">socketjs断开</button>
+
+      </div>
+      <div class="item">
+        <button mat-raised-button color="primary" (click)="wsConnect()">ws连接</button>
+        <button mat-raised-button color="warn"(click)="wsDisconnect()">ws断开</button>
+
+      </div>
+      <div class="item" >
+        <button mat-raised-button color="primary" (click)="stompjsConnect()">stompjs连接</button>
+        <button mat-raised-button color="warn" (click)="stompjsDisconnect()">stompjs断开</button>
+
+      </div>
+
+    </div>
+  </mat-card-content>
+</mat-card>

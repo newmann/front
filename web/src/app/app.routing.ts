@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AdminComponent } from './admin/admin.component';
 import { SignupComponent } from './admin/signup/signup.component';
 import { SigninComponent } from './admin/signin/signin.component';
+import {TestComponent} from "./admin/test/test.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'admin', pathMatch: 'full'},
@@ -15,6 +16,7 @@ const routes: Routes = [
     path: 'admin', component: AdminComponent, children: [
     {path: 'home', loadChildren: './home/home.module#HomeModule'},
     {path: 'document', loadChildren: './document/document.module#DocumentModule'},
+    {path: 'test', component: TestComponent},
     // {path: 'apps/navigation', loadChildren: './navigation/navigation.module#NavigationModule'},
     // {path: 'apps/chats', loadChildren: './chats/chats.module#ChatsModule'},
     // {path: 'apps/mail', loadChildren: './mail/mail.module#MailModule'},

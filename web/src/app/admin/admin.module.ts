@@ -9,6 +9,7 @@ import { AdminComponent } from './admin.component';
 import { BrandComponent } from './brand/brand.component';
 import { CustomizerComponent } from './customizer/customizer.component';
 import { FooterComponent } from './footer/footer.component';
+import { TestComponent } from './test/test.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { FooterComponent } from './footer/footer.component';
     AdminComponent,
     BrandComponent,
     CustomizerComponent,
-    FooterComponent
+    FooterComponent,
+    TestComponent
   ],
   providers: [],
   exports: []

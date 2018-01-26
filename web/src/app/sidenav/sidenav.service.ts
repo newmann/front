@@ -68,6 +68,7 @@ export class SidenavService {
     const systemPages = this.addItem('系统', 'more_horiz', null, 8);
     this.addSubItem(systemPages, '登录', '/sigin', 1);
     this.addSubItem(systemPages, '注册', '/sigup', 1);
+    this.addSubItem(systemPages, '测试', '/admin/test', 1);
     // this.addSubItem(systemPages, '404', '/sigup', 1);
     // this.addSubItem(systemPages, '500', '/sigup', 1);
 

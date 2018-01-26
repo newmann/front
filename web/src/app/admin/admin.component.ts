@@ -21,7 +21,7 @@ export class AdminComponent implements OnInit {
   sidenavOpen: boolean = true;
   sidenavMode: string = 'side';
 
-  title = '后台管理系统 - Power by stbui';
+  title = '后台管理系统 - Power by Beiyelin';
 
   get media$(): Observable<MediaChange> {
     return this._media$.asObservable();
