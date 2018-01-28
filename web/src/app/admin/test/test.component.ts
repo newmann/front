@@ -9,6 +9,7 @@ import {WebsocketService} from "../../core/websocket.service";
 export class TestComponent implements OnInit {
   websocketUri: string = "http://localhost:8090/beiyelin";
   sockjsStatus:number;
+  msg: string;
   constructor(private  websocketService: WebsocketService) {
     // this.sockjsStatus = websocketService.socketjs.State;
   }
@@ -16,24 +17,28 @@ export class TestComponent implements OnInit {
   ngOnInit() {
   }
   public sockjsConnect(){
-    this.websocketService.connectSockjs(this.websocketUri);
+    // this.websocketService.connectSockjs(this.websocketUri);
   }
   public  sockjsDisconnect(){
 
-    this.websocketService.disconnectSockjs();
+    // this.websocketService.disconnectSockjs();
 }
   public stompjsConnect(){
-    this.websocketService.connectStomp();
+    this.websocketService.connectStomp("ws://localhost:8090/beiyelin?Authorization=123456");
   }
   public stompjsDisconnect(){
     this.websocketService.disconnectStomp();
   }
 
   public wsConnect(){
-    this.websocketService.connectWS("ws://localhost:8090/beiyelin");
+    // this.websocketService.connectWS("ws://localhost:8090/beiyelin?Authorization=123456");
   }
 
   public wsDisconnect(){
-    this.websocketService.disconnectWS();
+    // this.websocketService.disconnectWS();
   }
+  public sendMsg(){
+    this.websocketService.sendMsg(this.msg);
+  }
+
 }

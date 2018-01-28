@@ -11,24 +11,37 @@
 
       </div>
       <div class="item">
-        <p>sockjs链接状态：{{sockjsStatus}}</p>
+        <p>sockjs链接状态：{{websocketService.websocketState | async}}</p>
       </div>
-      <div class="item">
-        <button mat-raised-button color="primary" (click)="sockjsConnect()">socketjs连接</button>
-        <button mat-raised-button color="warn"(click)="sockjsDisconnect()">socketjs断开</button>
+      <!--<div class="item">-->
+        <!--<button mat-raised-button color="primary" (click)="sockjsConnect()">socketjs连接</button>-->
+        <!--<button mat-raised-button color="warn"(click)="sockjsDisconnect()">socketjs断开</button>-->
 
-      </div>
-      <div class="item">
-        <button mat-raised-button color="primary" (click)="wsConnect()">ws连接</button>
-        <button mat-raised-button color="warn"(click)="wsDisconnect()">ws断开</button>
+      <!--</div>-->
+      <!--<div class="item">-->
+        <!--<button mat-raised-button color="primary" (click)="wsConnect()">ws连接</button>-->
+        <!--<button mat-raised-button color="warn"(click)="wsDisconnect()">ws断开</button>-->
 
-      </div>
+      <!--</div>-->
       <div class="item" >
         <button mat-raised-button color="primary" (click)="stompjsConnect()">stompjs连接</button>
         <button mat-raised-button color="warn" (click)="stompjsDisconnect()">stompjs断开</button>
 
       </div>
-
+      <div class="item" >
+        <mat-form-field >
+          <input  matInput placeholder="发送消息" [(ngModel)]="msg">
+        </mat-form-field>
+      </div>
+      <div class="item">
+        <button mat-raised-button color="primary" (click)="sendMsg()">发送</button>
+      </div>
+      <div class="item" >
+        <p>接收点对点消息：{{websocketService.chatMessage | async}}</p>
+      </div>
+      <div class="item" >
+        <p>接收广播消息：{{websocketService.generalMessage | async}}</p>
+      </div>
     </div>
   </mat-card-content>
 </mat-card>

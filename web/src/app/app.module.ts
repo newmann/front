@@ -23,6 +23,7 @@ import {reducers,metaReducers} from "./reducer/index";
 import {CustomRouterStateSerializer} from "./shared/routerstate.utils";
 import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
 import {CustomeHttpInterceptor} from "./core/custome-http.interceptor";
+import {StompRService} from "@stomp/ng2-stompjs";
 
 // import { FireBaseComponentsModule } from './shared/firebase.module';
 
@@ -92,6 +93,10 @@ import {CustomeHttpInterceptor} from "./core/custome-http.interceptor";
      * by `@ngrx/router-store` to include only the desired pieces of the snapshot.
      */
     { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
+    /**
+     * Stompjs service
+     */
+    StompRService
 
   ],
   bootstrap: [AppComponent]
