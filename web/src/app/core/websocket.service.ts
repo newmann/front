@@ -7,6 +7,7 @@ import {AuthDataService} from "./auth-data.service";
 // import * as Stomp from "@stomp/stompjs";
 import {StompConfig, StompRService, StompState} from "@stomp/ng2-stompjs";
 import {SubmitMessage} from "./submit-message";
+import {CustomeStompRService} from "./custome-stomp-r.service";
 
 @Injectable()
 export class WebsocketService {
@@ -19,7 +20,7 @@ export class WebsocketService {
   // stompClient: any = null;
   stompConfig: StompConfig
 
-  constructor(private authData: AuthDataService,private stompService: StompRService) {
+  constructor(private authData: AuthDataService,private stompService: CustomeStompRService) {
   // private _stompService: StompRService,
     // console.log('Stomp init');
     // this.initStomp();
@@ -77,13 +78,13 @@ export class WebsocketService {
     this.stompService.initAndConnect();
     this.websocketState = this.stompService.state
        .map((state: number) => StompState[state]);
-    this.generalMessage = this.stompService.subscribe('/topic')
+    this.generalMessage = this.stompService.subscribe('/topic',this.stompConfig.headers)
       .map((message: Message) => {
         console.log(message.body);
         return message.body;
       })
       ;
-    this.chatMessage = this.stompService.subscribe('/user/system')
+    this.chatMessage = this.stompService.subscribe('/user/system',this.stompConfig.headers)
       .map((message: Message) => {
         console.log(message.body);
         return message.body;
@@ -144,13 +145,15 @@ export class WebsocketService {
     this.initStomp();
   }
   public disconnectStomp(){
-    this.stompService.disconnect();
+
+    this.stompService.disconnectWithHeader(this.stompConfig.headers);
   }
+
   public sendMsg(msg:string){
     let m = new SubmitMessage<string>();
     m.id = "1";
     m.action = "hello";
     m.data = msg;
-    this.stompService.publish('/app/guest/hello',JSON.stringify(m));
+    this.stompService.publish('/app/guest/hello',JSON.stringify(m),this.stompConfig.headers);
   }
 }
