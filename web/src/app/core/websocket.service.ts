@@ -78,15 +78,15 @@ export class WebsocketService {
     this.stompService.initAndConnect();
     this.websocketState = this.stompService.state
        .map((state: number) => StompState[state]);
-    this.generalMessage = this.stompService.subscribe('/topic',this.stompConfig.headers)
+    this.generalMessage = this.stompService.subscribe('/topic')
       .map((message: Message) => {
-        console.log(message.body);
+        console.log("topic:" + message.body);
         return message.body;
       })
       ;
-    this.chatMessage = this.stompService.subscribe('/user/system',this.stompConfig.headers)
+    this.chatMessage = this.stompService.subscribe('/user/system')
       .map((message: Message) => {
-        console.log(message.body);
+        console.log("/user/system:" + message.body);
         return message.body;
       })
       ;

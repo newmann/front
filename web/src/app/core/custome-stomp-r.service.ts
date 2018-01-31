@@ -3,12 +3,24 @@
  * @Author: newmann
  * @Date: Created in 22:25 2018-01-30
  */
-import {StompRService} from "@stomp/ng2-stompjs";
+import {StompRService, StompState} from "@stomp/ng2-stompjs";
 import {StompHeaders} from "@stomp/ng2-stompjs/src/stomp-headers";
+import {Injectable} from "@angular/core";
 
+@Injectable()
 export class CustomeStompRService extends StompRService{
 
   disconnectWithHeader(header?:StompHeaders):void{
-    this.client.disconnect(null,header);
+    // Disconnect if connected. Callback will set CLOSED state
+    if (this.client && this.client.connected) {
+      // Notify observers that we are disconnecting!
+      this.state.next(StompState.DISCONNECTING);
+
+      this.client.disconnect(
+        () => this.state.next(StompState.CLOSED)
+        ,header
+      );
+    }
+
   }
 }
