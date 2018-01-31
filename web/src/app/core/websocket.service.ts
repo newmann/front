@@ -14,11 +14,12 @@ export class WebsocketService {
   websocketState: Observable<String>;
   generalMessage: Observable<String>;
   chatMessage: Observable<String>;
+
   defaultUri:string = "http://localhost:8090/beiyelin?Authorization=123456";
   //  ws: any = null;
   // socketjs: any = null;
   // stompClient: any = null;
-  stompConfig: StompConfig
+  stompConfig: StompConfig;
 
   constructor(private authData: AuthDataService,private stompService: CustomeStompRService) {
   // private _stompService: StompRService,
@@ -154,6 +155,6 @@ export class WebsocketService {
     m.id = "1";
     m.action = "hello";
     m.data = msg;
-    this.stompService.publish('/app/guest/hello',JSON.stringify(m),this.stompConfig.headers);
+    this.stompService.publish('/app/guest/hello',JSON.stringify(m) /*,this.stompConfig.headers*/);
   }
 }
