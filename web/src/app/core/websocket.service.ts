@@ -8,6 +8,7 @@ import {AuthDataService} from "./auth-data.service";
 import {StompConfig, StompRService, StompState} from "@stomp/ng2-stompjs";
 import {SubmitMessage} from "./submit-message";
 import {CustomeStompRService} from "./custome-stomp-r.service";
+import {StompHeaders} from "@stomp/ng2-stompjs/src/stomp-headers";
 
 @Injectable()
 export class WebsocketService {
@@ -19,7 +20,9 @@ export class WebsocketService {
   //  ws: any = null;
   // socketjs: any = null;
   // stompClient: any = null;
-  stompConfig: StompConfig;
+  stompConfig: StompConfig;//链接和断开的时候使用
+  //在publish之后，publis的url会写到headers中，造成后续断开操作在后台报错，所hi这里需要单独设置一个
+  publishHeaders:StompHeaders;
 
   constructor(private authData: AuthDataService,private stompService: CustomeStompRService) {
   // private _stompService: StompRService,
@@ -55,6 +58,10 @@ export class WebsocketService {
       debug: true
     };
 
+    this.publishHeaders = {
+      user: '123456',
+      passcode: '123456'
+    };
   }
 
   public initStomp() {
@@ -155,6 +162,6 @@ export class WebsocketService {
     m.id = "1";
     m.action = "hello";
     m.data = msg;
-    this.stompService.publish('/app/guest/hello',JSON.stringify(m) /*,this.stompConfig.headers*/);
+    this.stompService.publish('/app/guest/hello',JSON.stringify(m) ,this.publishHeaders);
   }
 }
