@@ -9,30 +9,32 @@ import {StompConfig, StompRService, StompState} from "@stomp/ng2-stompjs";
 import {SubmitMessage} from "./submit-message";
 import {CustomeStompRService} from "./custome-stomp-r.service";
 import {StompHeaders} from "@stomp/ng2-stompjs/src/stomp-headers";
+import {BeiyelinMessageModel} from "./beiyelin-message.model";
+import {exitCodeFromResult} from "@angular/compiler-cli";
 
 @Injectable()
 export class WebsocketService {
+  public static WEBSOCKET_ENDPOINT: string = "/beiyelin";
+  public static WEBSOCKET_CHANNEL_TOPIC: string = "/topic";
+  public static WEBSOCKET_CHANNEL_SYSTEM: string = "/user/system";
+
+  public static WEBSOCKET_PUBLISH_CRUD: string = "/app/crud/submit";
+  public static WEBSOCKET_PUBLISH_CHAT: string = "/app/chat/submit";
+
   websocketState: Observable<String>;
   generalMessage: Observable<String>;
-  chatMessage: Observable<String>;
+  chatMessage: Observable<BeiyelinMessageModel<any>>;
 
-  defaultUri:string = "http://localhost:8090/beiyelin?Authorization=123456";
-  //  ws: any = null;
-  // socketjs: any = null;
-  // stompClient: any = null;
+  defaultUri:string ; //= "http://localhost:8090/beiyelin?Authorization=123456";
+
   stompConfig: StompConfig;//链接和断开的时候使用
   //在publish之后，publis的url会写到headers中，造成后续断开操作在后台报错，所hi这里需要单独设置一个
   publishHeaders:StompHeaders;
+  subscribeHeaders:StompHeaders;
 
   constructor(private authData: AuthDataService,private stompService: CustomeStompRService) {
-  // private _stompService: StompRService,
-    // console.log('Stomp init');
-    // this.initStomp();
-    // console.log('Status init');
-    // this.websocketState = this._stompService.state
-    //   .map((state: number) => StompState[state]);
-    // console.log('subscribe general channel');
-    // this.generalMessage = this._stompService.subscribe('/general');
+    this.defaultUri = WebsocketService.WEBSOCKET_ENDPOINT + "?Authorization=" + this.authData.token;
+
     this.stompConfig = {
       // Which server?
       url: this.defaultUri,
@@ -40,7 +42,7 @@ export class WebsocketService {
       // Headers
       // Typical keys: login, passcode, host
       headers: {
-        user: '123456',
+        user: this.authData.currentUserId,
         passcode: '123456'
       },
 
@@ -59,9 +61,15 @@ export class WebsocketService {
     };
 
     this.publishHeaders = {
-      user: '123456',
+      user: this.authData.currentUserId,
       passcode: '123456'
     };
+    this.subscribeHeaders = {
+      user: this.authData.currentUserId,
+      passcode: '123456'
+    };
+
+
   }
 
   public initStomp() {
@@ -86,18 +94,19 @@ export class WebsocketService {
     this.stompService.initAndConnect();
     this.websocketState = this.stompService.state
        .map((state: number) => StompState[state]);
-    this.generalMessage = this.stompService.subscribe('/topic')
+    this.generalMessage = this.stompService.subscribe(WebsocketService.WEBSOCKET_CHANNEL_TOPIC)
       .map((message: Message) => {
         console.log("topic:" + message.body);
         return message.body;
       })
       ;
-    this.chatMessage = this.stompService.subscribe('/user/system')
+    this.chatMessage = this.stompService.subscribe(WebsocketService.WEBSOCKET_CHANNEL_SYSTEM)
       .map((message: Message) => {
         console.log("/user/system:" + message.body);
-        return message.body;
+        return JSON.parse(message.body);
       })
       ;
+
   }
 
 //   public connectWS(uri: string){
@@ -157,6 +166,7 @@ export class WebsocketService {
     this.stompService.disconnectWithHeader(this.stompConfig.headers);
   }
 
+
   public sendMsg(msg:string){
     let m = new SubmitMessage<string>();
     m.id = "1";
@@ -164,4 +174,13 @@ export class WebsocketService {
     m.data = msg;
     this.stompService.publish('/app/guest/hello',JSON.stringify(m) ,this.publishHeaders);
   }
+
+  public CRUD(msg:any){
+    this.stompService.publish(WebsocketService.WEBSOCKET_PUBLISH_CRUD,JSON.stringify(msg) ,this.publishHeaders);
+  }
+
+  public Chat(msg:any){
+    this.stompService.publish(WebsocketService.WEBSOCKET_PUBLISH_CHAT,JSON.stringify(msg) ,this.publishHeaders);
+  }
+
 }

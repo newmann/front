@@ -1,5 +1,5 @@
 /**
- * @Description: 通过stomp返回的消息格式
+ * @Description: 消息格式定义
  * @Author: newmann
  * @Date: Created in 9:52 2018-01-27
  */
